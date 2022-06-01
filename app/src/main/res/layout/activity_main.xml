@@ -56,14 +56,14 @@
 
     <com.github.gcacace.signaturepad.views.SignaturePad
         android:id="@+id/signature_pad"
-        android:layout_width="303dp"
-        android:layout_height="334dp"
-        android:layout_marginTop="24dp"
+        android:layout_width="311dp"
+        android:layout_height="233dp"
+        android:layout_marginTop="20dp"
         android:background="#EFFAFB"
+        app:clearOnDoubleClick="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textSurname"
-        app:clearOnDoubleClick="true"
+        app:layout_constraintTop_toBottomOf="@+id/editTextTextMultiLine"
         app:penColor="@android:color/black" />
 
     <Button
@@ -74,6 +74,23 @@
         android:onClick="onSaveBtnClick"
         android:text="Guardar"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.467"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/signature_pad" />
+
+    <EditText
+        android:id="@+id/editTextTextMultiLine"
+        android:layout_width="382dp"
+        android:layout_height="105dp"
+        android:layout_marginStart="13dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginEnd="13dp"
+        android:ems="10"
+        android:gravity="start|top"
+        android:hint="detalles"
+        android:inputType="textMultiLine"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textSurname" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
