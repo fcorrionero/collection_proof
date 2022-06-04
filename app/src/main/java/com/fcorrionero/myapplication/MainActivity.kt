@@ -30,11 +30,6 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        if (checkPermission()) {
-            Toast.makeText(this, "Permission Granted", Toast.LENGTH_SHORT).show();
-        } else {
-            requestPermission();
-        }
     }
 
     fun onSaveBtnClick(v: View) {
@@ -49,7 +44,7 @@ class MainActivity : AppCompatActivity() {
         val paint = Paint()
 
         val pageInfo = PdfDocument.PageInfo.Builder(pagewidth, pageHeight, 1).create()
-        val myPage = pdfDocument.startPage(pageInfo);
+        val myPage = pdfDocument.startPage(pageInfo)
         text.typeface = Typeface.create(Typeface.DEFAULT, Typeface.NORMAL)
         text.textSize = 15F
         text.color = ContextCompat.getColor(this, R.color.purple_200)
@@ -64,11 +59,11 @@ class MainActivity : AppCompatActivity() {
 
         val scaledbmp = Bitmap.createScaledBitmap(bitmap, 140, 140, false)
         canvas.drawBitmap(scaledbmp, 56F, 40F, paint)
-        canvas.drawText("This is sample document which we have created.", 396F, 560F, text);
+        canvas.drawText("This is sample document which we have created.", 396F, 560F, text)
 
         pdfDocument.finishPage(myPage)
 
-        val file = File(Environment.getExternalStorageDirectory(), "GFG.pdf")
+        val file = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), "GFG.pdf")
         try {
             pdfDocument.writeTo(FileOutputStream(file))
         }catch (e: IOException) {
@@ -78,13 +73,4 @@ class MainActivity : AppCompatActivity() {
         pdfDocument.close()
     }
 
-    private fun checkPermission(): Boolean  {
-        val permission1 = ContextCompat.checkSelfPermission(applicationContext, WRITE_EXTERNAL_STORAGE)
-        val permission2 = ContextCompat.checkSelfPermission(applicationContext, READ_EXTERNAL_STORAGE)
-        return permission1 == PackageManager.PERMISSION_GRANTED && permission2 == PackageManager.PERMISSION_GRANTED
-    }
-
-    private fun requestPermission() {
-        ActivityCompat.requestPermissions(this, arrayOf(WRITE_EXTERNAL_STORAGE, READ_EXTERNAL_STORAGE), PERMISSION_REQUEST_CODE)
-    }
 }
