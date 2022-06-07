@@ -4,6 +4,7 @@ import android.graphics.*
 import android.graphics.pdf.PdfDocument
 import android.os.Bundle
 import android.os.Environment
+import android.text.TextPaint
 import android.view.View
 import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
@@ -17,7 +18,8 @@ class MainActivity : AppCompatActivity() {
 
     val pageHeight = 1120
     val pagewidth = 792
-    private val PERMISSION_REQUEST_CODE = 200
+    private val INITIAL_PAGE_HEIGHT = 60F
+    private val LEFT_PAGE_MARGIN = 30F
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,44 +35,34 @@ class MainActivity : AppCompatActivity() {
         val bitmap = signature.getTransparentSignatureBitmap()
 
         val pdfDocument = PdfDocument()
-        val text = Paint()
+        val defaultText = TextPaint()
         val paint = Paint()
 
         val pageInfo = PdfDocument.PageInfo.Builder(pagewidth, pageHeight, 1).create()
         val myPage = pdfDocument.startPage(pageInfo)
-        text.typeface = Typeface.create(Typeface.DEFAULT, Typeface.NORMAL)
-        text.textSize = 15F
-        text.color = ContextCompat.getColor(this, R.color.black)
-        text.textAlign = Paint.Align.LEFT
+        defaultText.typeface = Typeface.create(Typeface.DEFAULT, Typeface.NORMAL)
+        defaultText.textSize = 15F
+        defaultText.color = ContextCompat.getColor(this, R.color.black)
+        defaultText.textAlign = Paint.Align.LEFT
 
         val canvas: Canvas = myPage.canvas
-        val directions = getString(R.string.shop_direction).split("<br/>")
-        var height = 30F
-        directions.forEach {
-            canvas.drawText(it, 30F, height, text)
-            height += 20F
-        }
 
-        val logo: Bitmap? = BitmapFactory.decodeResource(resources, R.drawable.logo_appinformatica)
-        // ResourcesCompat.getDrawable(resources, R.drawable.logo_appinformatica, null)
+        var height = drawShopAddress(canvas, defaultText)
+        drawLogo(canvas, paint, myPage)
+        height = drawBillTitle(canvas, height)
+        height = drawAENumber(canvas, height, defaultText)
 
-        if (null != logo) {
-            canvas.drawBitmap(
-                Bitmap.createScaledBitmap(logo, logo.width / 5, logo.height / 5, false),
-                100F,
-                30F,
-                paint
-            )
-        }
-        canvas.drawText(
-            "${phone.text} ${name.text} ${surname.text}\n${details.text}",
-            56F,
-            220F,
-            text
-        )
+//        height += defaultText.textSize*3
+//        canvas.drawText(
+//            "${phone.text} ${name.text} ${surname.text}\n${details.text}",
+//            56F,
+//            height,
+//            defaultText
+//        )
+//        height += defaultText.textSize*3
 
         val scaledBmp = Bitmap.createScaledBitmap(bitmap, 140, 140, false)
-        canvas.drawBitmap(scaledBmp, 56F, 350F, paint)
+        canvas.drawBitmap(scaledBmp, 56F, height, paint)
 
         pdfDocument.finishPage(myPage)
 
@@ -85,6 +77,59 @@ class MainActivity : AppCompatActivity() {
         }
 
         pdfDocument.close()
+    }
+
+    private fun drawAENumber(
+        canvas: Canvas,
+        height: Float,
+        text: TextPaint
+    ): Float {
+        canvas.drawText(getString(R.string.ae_number), LEFT_PAGE_MARGIN, height, text)
+        return height + text.fontSpacing
+    }
+
+    private fun drawBillTitle(
+        canvas: Canvas,
+        height: Float
+    ): Float {
+        val titleText = TextPaint()
+        titleText.typeface = Typeface.create(Typeface.DEFAULT, Typeface.BOLD)
+        titleText.textSize = 30F
+        titleText.color = ContextCompat.getColor(this, R.color.black)
+        titleText.textAlign = Paint.Align.LEFT
+        canvas.drawText(getString(R.string.bill_title), LEFT_PAGE_MARGIN, height + titleText.fontSpacing + 30F, titleText)
+        return  (height + titleText.fontSpacing + 60F)
+    }
+
+    private fun drawLogo(
+        canvas: Canvas,
+        paint: Paint,
+        page: PdfDocument.Page
+    ) {
+        val logo: Bitmap? = BitmapFactory.decodeResource(resources, R.drawable.logo)
+        // ResourcesCompat.getDrawable(resources, R.drawable.logo, null)
+        if (null != logo) {
+            val bitmap = Bitmap.createScaledBitmap(logo, logo.width / 5, logo.height / 5, false)
+            canvas.drawBitmap(
+                bitmap,
+                page.info.pageWidth - bitmap.width - LEFT_PAGE_MARGIN,
+                INITIAL_PAGE_HEIGHT,
+                paint
+            )
+        }
+    }
+
+    private fun drawShopAddress(
+        canvas: Canvas,
+        text: TextPaint
+    ): Float {
+        val directions = getString(R.string.shop_direction).split("\n")
+        var height = INITIAL_PAGE_HEIGHT
+        directions.forEach {
+            canvas.drawText(it, LEFT_PAGE_MARGIN, height, text)
+            height += text.fontSpacing
+        }
+        return height
     }
 
 }
