@@ -1,7 +1,6 @@
 package com.fcorrionero.myapplication
 
 import android.graphics.*
-import android.graphics.drawable.Drawable
 import android.graphics.pdf.PdfDocument
 import android.os.Bundle
 import android.os.Environment
@@ -9,7 +8,6 @@ import android.view.View
 import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
-import androidx.core.content.res.ResourcesCompat
 import com.github.gcacace.signaturepad.views.SignaturePad
 import java.io.File
 import java.io.FileOutputStream
@@ -46,6 +44,12 @@ class MainActivity : AppCompatActivity() {
         text.textAlign = Paint.Align.LEFT
 
         val canvas: Canvas = myPage.canvas
+        val directions = getString(R.string.shop_direction).split("<br/>")
+        var height = 30F
+        directions.forEach {
+            canvas.drawText(it, 30F, height, text)
+            height += 20F
+        }
 
         val logo: Bitmap? = BitmapFactory.decodeResource(resources, R.drawable.logo_appinformatica)
         // ResourcesCompat.getDrawable(resources, R.drawable.logo_appinformatica, null)
@@ -53,7 +57,7 @@ class MainActivity : AppCompatActivity() {
         if (null != logo) {
             canvas.drawBitmap(
                 Bitmap.createScaledBitmap(logo, logo.width / 5, logo.height / 5, false),
-                30F,
+                100F,
                 30F,
                 paint
             )
@@ -61,7 +65,7 @@ class MainActivity : AppCompatActivity() {
         canvas.drawText(
             "${phone.text} ${name.text} ${surname.text}\n${details.text}",
             56F,
-            120F,
+            220F,
             text
         )
 

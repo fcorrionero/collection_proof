@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">Collection Proof</string>
+    <string name="shop_direction">
+        SEBASTIÁN HERRERO SÁNCHEZ<br/>
+        PASEO DE SAN ANTONIO Nº17<br/>
+        DNI: 70891907L<br/>
+        TELÉFONO: 923625880
+    </string>
 </resources>
