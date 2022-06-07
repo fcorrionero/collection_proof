@@ -8,7 +8,7 @@
     </string>
     <string name="bill_title">ALBARÁN DE REPARACIÓN</string>
     <string name="ae_number">Nº AE</string>
-    <string name="bill_enter_date">FECHA DE ENTRADA DEL DISPOSITIVO</string>
+    <string name="bill_enter_date">FECHA DE ENTRADA DEL DISPOSITIVO (mes/dia/año)</string>
 
     <string name="client_data">DATOS DEL CLIENTE</string>
     <string name="client_name">NOMBRE CLIENTE</string>
