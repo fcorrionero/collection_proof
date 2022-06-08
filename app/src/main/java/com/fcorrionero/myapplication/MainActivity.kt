@@ -64,15 +64,8 @@ class MainActivity : AppCompatActivity() {
         height = drawDeviceEnterDate(canvas, labelText, defaultText, height)
         drawDeviceData(canvas, labelText, defaultText, height)
         height = drawClientData(canvas, labelText, defaultText, height)
-
-//        height += defaultText.textSize*3
-//        canvas.drawText(
-//            "${phone.text} ${name.text} ${surname.text}\n${details.text}",
-//            56F,
-//            height,
-//            defaultText
-//        )
-//        height += defaultText.textSize*3
+        height = drawIssueData(canvas, labelText, defaultText, height)
+        height = drawBudgetData(canvas, labelText, defaultText, height)
 
         val scaledBmp = Bitmap.createScaledBitmap(bitmap, 140, 140, false)
         canvas.drawBitmap(scaledBmp, 56F, height, paint)
@@ -92,6 +85,116 @@ class MainActivity : AppCompatActivity() {
         pdfDocument.close()
     }
 
+    private fun drawBudgetData(
+        canvas: Canvas,
+        labelText: TextPaint,
+        dataText: TextPaint,
+        height: Float
+    ): Float {
+        val dataWidth = 250F
+        var tempHeight = height + labelText.textSize * LABEL_HEIGHT_SPACING
+        canvas.drawText(getString(R.string.budget_title), 250F, tempHeight, labelText)
+        tempHeight += labelText.textSize * LABEL_HEIGHT_SPACING
+        canvas.drawText(
+            getString(R.string.budget_quantity),
+            LEFT_PAGE_MARGIN,
+            tempHeight,
+            labelText
+        )
+        canvas.drawText(
+            getString(R.string.budget_quantity),
+            dataWidth,
+            tempHeight,
+            dataText
+        )
+
+        val extraWidth = dataWidth + labelText.textSize * LABEL_HEIGHT_SPACING + 200F
+        val dataExtraWidth = extraWidth + getString(R.string.budget_acceptation).length * LABEL_WIDTH_SPACING
+        canvas.drawText(
+            getString(R.string.budget_acceptation),
+            extraWidth,
+            tempHeight,
+            labelText
+        )
+        canvas.drawText(
+            getString(R.string.budget_acceptation),
+            dataExtraWidth,
+            tempHeight,
+            dataText
+        )
+        tempHeight += labelText.textSize * LABEL_HEIGHT_SPACING
+        canvas.drawText(
+            getString(R.string.client_signature),
+            extraWidth,
+            tempHeight,
+            labelText
+        )
+        return tempHeight
+    }
+
+    private fun drawIssueData(
+        canvas: Canvas,
+        labelText: TextPaint,
+        dataText: TextPaint,
+        height: Float
+    ): Float {
+        val dataWidth = 250F
+        var tempHeight = height + labelText.textSize * LABEL_HEIGHT_SPACING
+        canvas.drawText(getString(R.string.issue_title), 250F, height, labelText)
+        canvas.drawText(
+            getString(R.string.issue_type),
+            LEFT_PAGE_MARGIN,
+            tempHeight,
+            labelText
+        )
+        canvas.drawText(
+            getString(R.string.issue_type),
+            dataWidth,
+            tempHeight,
+            dataText
+        )
+        tempHeight += labelText.textSize * LABEL_HEIGHT_SPACING
+        canvas.drawText(
+            getString(R.string.issue_solution),
+            LEFT_PAGE_MARGIN,
+            tempHeight,
+            labelText
+        )
+        canvas.drawText(
+            getString(R.string.issue_solution),
+            dataWidth,
+            tempHeight,
+            dataText
+        )
+        tempHeight += labelText.textSize * LABEL_HEIGHT_SPACING
+        canvas.drawText(
+            getString(R.string.issue_observations),
+            LEFT_PAGE_MARGIN,
+            tempHeight,
+            labelText
+        )
+        canvas.drawText(
+            getString(R.string.issue_observations),
+            dataWidth,
+            tempHeight,
+            dataText
+        )
+        tempHeight += labelText.textSize * LABEL_HEIGHT_SPACING
+        canvas.drawText(
+            getString(R.string.issue_photos),
+            LEFT_PAGE_MARGIN,
+            tempHeight,
+            labelText
+        )
+        canvas.drawText(
+            getString(R.string.issue_photos),
+            dataWidth,
+            tempHeight,
+            dataText
+        )
+        return tempHeight + labelText.textSize * LABEL_HEIGHT_SPACING
+    }
+
     private fun drawDeviceData(
         canvas: Canvas,
         labelText: TextPaint,
@@ -99,9 +202,9 @@ class MainActivity : AppCompatActivity() {
         height: Float
     ): Float {
         val width = 370F
-        val dataWidth = width + getString(R.string.device_accessories).length*LABEL_WIDTH_SPACING
-        canvas.drawText(getString(R.string.device), width + 20F, height, labelText)
-        var tempHeight = height + labelText.textSize*LABEL_HEIGHT_SPACING
+        val dataWidth = width + getString(R.string.device_serial_imei).length * LABEL_WIDTH_SPACING
+        canvas.drawText(getString(R.string.device), width + 100F, height, labelText)
+        var tempHeight = height + labelText.textSize * LABEL_HEIGHT_SPACING
         canvas.drawText(
             getString(R.string.device_accessories),
             width,
@@ -110,6 +213,32 @@ class MainActivity : AppCompatActivity() {
         )
         canvas.drawText(
             getString(R.string.device_accessories),
+            dataWidth,
+            tempHeight,
+            dataText
+        )
+        tempHeight += labelText.textSize * LABEL_HEIGHT_SPACING
+        canvas.drawText(
+            getString(R.string.device_brand_model),
+            width,
+            tempHeight,
+            labelText
+        )
+        canvas.drawText(
+            getString(R.string.device_brand_model),
+            dataWidth,
+            tempHeight,
+            dataText
+        )
+        tempHeight += labelText.textSize * LABEL_HEIGHT_SPACING
+        canvas.drawText(
+            getString(R.string.device_serial_imei),
+            width,
+            tempHeight,
+            labelText
+        )
+        canvas.drawText(
+            getString(R.string.device_serial_imei),
             dataWidth,
             tempHeight,
             dataText
@@ -123,8 +252,8 @@ class MainActivity : AppCompatActivity() {
         dataText: TextPaint,
         height: Float
     ): Float {
-        var tempHeight = height + labelText.textSize*LABEL_HEIGHT_SPACING
-        canvas.drawText(getString(R.string.client_data), 50F, height, labelText)
+        var tempHeight = height + labelText.textSize * LABEL_HEIGHT_SPACING
+        canvas.drawText(getString(R.string.client_data), 100F, height, labelText)
         canvas.drawText(
             getString(R.string.client_name),
             LEFT_PAGE_MARGIN,
@@ -137,7 +266,7 @@ class MainActivity : AppCompatActivity() {
             tempHeight,
             dataText
         )
-        tempHeight += labelText.textSize*LABEL_HEIGHT_SPACING
+        tempHeight += labelText.textSize * LABEL_HEIGHT_SPACING
         canvas.drawText(
             getString(R.string.client_phone),
             LEFT_PAGE_MARGIN,
@@ -150,7 +279,7 @@ class MainActivity : AppCompatActivity() {
             tempHeight,
             dataText
         )
-        tempHeight += labelText.textSize*LABEL_HEIGHT_SPACING
+        tempHeight += labelText.textSize * LABEL_HEIGHT_SPACING
         canvas.drawText(
             getString(R.string.client_address),
             LEFT_PAGE_MARGIN,
@@ -163,7 +292,7 @@ class MainActivity : AppCompatActivity() {
             tempHeight,
             dataText
         )
-        tempHeight += labelText.textSize*LABEL_HEIGHT_SPACING
+        tempHeight += labelText.textSize * LABEL_HEIGHT_SPACING
         canvas.drawText(
             getString(R.string.client_identification_number),
             LEFT_PAGE_MARGIN,
@@ -176,7 +305,7 @@ class MainActivity : AppCompatActivity() {
             tempHeight,
             dataText
         )
-        tempHeight += labelText.textSize*LABEL_HEIGHT_SPACING
+        tempHeight += labelText.textSize * LABEL_HEIGHT_SPACING
 
         return tempHeight
     }
