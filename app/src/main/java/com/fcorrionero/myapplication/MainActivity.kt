@@ -32,10 +32,10 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun onSaveBtnClick(v: View) {
-        val phone = this.findViewById<EditText>(R.id.editTextPhone)
-        val name = this.findViewById<EditText>(R.id.textName)
-        val surname = this.findViewById<EditText>(R.id.textSurname)
-        val details = this.findViewById<EditText>(R.id.editTextDetails)
+//        val phone = this.findViewById<EditText>(R.id.editTextPhone)
+//        val name = this.findViewById<EditText>(R.id.textName)
+//        val surname = this.findViewById<EditText>(R.id.textSurname)
+//        val details = this.findViewById<EditText>(R.id.editTextDetails)
         val signature = this.findViewById<SignaturePad>(R.id.signature_pad)
         val bitmap = signature.getTransparentSignatureBitmap()
 
