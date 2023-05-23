@@ -3,20 +3,31 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/navigation"
-    app:startDestination="@id/deviceData">
-
+    app:startDestination="@id/clientFragment">
     <fragment
-        android:id="@+id/deviceData"
-        android:name="com.fcorrionero.myapplication.DeviceData"
-        android:label="fragment_device_data"
-        tools:layout="@layout/fragment_device_data" >
+        android:id="@+id/clientFragment"
+        android:name="com.fcorrionero.myapplication.ui.ClientFragment"
+        android:label="fragment_client"
+        tools:layout="@layout/fragment_client" >
         <action
-            android:id="@+id/action_deviceData_to_mainActivity"
-            app:destination="@id/mainActivity" />
+            android:id="@+id/navigateToDeviceFragment"
+            app:destination="@id/deviceFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim" />
     </fragment>
-    <activity
-        android:id="@+id/mainActivity"
-        android:name="com.fcorrionero.myapplication.MainActivity"
-        android:label="activity_main"
-        tools:layout="@layout/activity_main" />
+    <fragment
+        android:id="@+id/deviceFragment"
+        android:name="com.fcorrionero.myapplication.ui.DeviceFragment"
+        android:label="fragment_device"
+        tools:layout="@layout/fragment_device" >
+        <action
+            android:id="@+id/navigateToClientFragment"
+            app:destination="@id/clientFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim" />
+        <argument
+            android:name="number"
+            app:argType="integer"
+            android:defaultValue="2" />
+    </fragment>
 </navigation>

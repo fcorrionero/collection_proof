@@ -3,16 +3,11 @@ package com.fcorrionero.myapplication
 import android.graphics.*
 import android.graphics.pdf.PdfDocument
 import android.os.Bundle
-import android.os.Environment
 import android.text.TextPaint
 import android.view.View
-import android.widget.EditText
+import android.widget.FrameLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
-import com.github.gcacace.signaturepad.views.SignaturePad
-import java.io.File
-import java.io.FileOutputStream
-import java.io.IOException
 import java.text.SimpleDateFormat
 import java.time.Instant
 import java.util.*
@@ -29,6 +24,23 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+//        if (findViewById<FrameLayout>(R.id.fragment_container) != null) {
+//
+//            // However, if we're being restored from a previous state,
+//            // then we don't need to do anything and should return or else
+//            // we could end up with overlapping fragments.
+//            if (savedInstanceState != null) {
+//                return
+//            }
+//
+//            // Create a new Fragment to be placed in the activity layout
+//
+//            //val firstFragment = ClientData()
+//
+//            // Add the fragment to the 'fragment_container' FrameLayout
+////            supportFragmentManager.beginTransaction()
+////                .add(R.id.fragment_container, firstFragment).commit()
+//        }
     }
 
     fun onSaveBtnClick(v: View) {
@@ -36,6 +48,7 @@ class MainActivity : AppCompatActivity() {
 //        val name = this.findViewById<EditText>(R.id.textName)
 //        val surname = this.findViewById<EditText>(R.id.textSurname)
 //        val details = this.findViewById<EditText>(R.id.editTextDetails)
+        /*
         val signature = this.findViewById<SignaturePad>(R.id.signature_pad)
         val bitmap = signature.getTransparentSignatureBitmap()
 
@@ -83,6 +96,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         pdfDocument.close()
+         */
     }
 
     private fun drawBudgetData(
