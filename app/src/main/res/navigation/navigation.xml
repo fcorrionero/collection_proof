@@ -29,5 +29,29 @@
             android:name="number"
             app:argType="integer"
             android:defaultValue="2" />
+        <action
+            android:id="@+id/navigateToIssueFragment"
+            app:destination="@id/issueFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/issueFragment"
+        android:name="com.fcorrionero.myapplication.ui.IssueFragment"
+        android:label="fragment_issue"
+        tools:layout="@layout/fragment_issue" >
+        <action
+            android:id="@+id/navigateFromIssueToDeviceFragment"
+            app:destination="@id/deviceFragment" />
+        <action
+            android:id="@+id/navigateToBudgetFragment"
+            app:destination="@id/budgetFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/budgetFragment"
+        android:name="com.fcorrionero.myapplication.ui.BudgetFragment"
+        android:label="fragment_budget"
+        tools:layout="@layout/fragment_budget" >
+        <action
+            android:id="@+id/navigateFromBudgetToIssueFragment"
+            app:destination="@id/issueFragment" />
     </fragment>
 </navigation>

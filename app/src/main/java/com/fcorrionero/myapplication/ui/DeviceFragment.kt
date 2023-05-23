@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.TextView
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.navArgs
@@ -43,9 +44,8 @@ class DeviceFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_device, container, false)
 
         val number = args.number
-        view.findViewById<TextView>(R.id.textView).setText(number.toString())
-        view.findViewById<TextView>(R.id.textView).setOnClickListener {
-            Navigation.findNavController(view).navigate(R.id.navigateToClientFragment)
+        view.findViewById<Button>(R.id.button).setOnClickListener {
+            onButtonClick(view)
         }
 
         return view
@@ -70,4 +70,9 @@ class DeviceFragment : Fragment() {
                 }
             }
     }
+
+    private fun onButtonClick(view: View) {
+        Navigation.findNavController(view).navigate(R.id.navigateToIssueFragment)
+    }
+
 }
