@@ -1,15 +1,18 @@
 package com.fcorrionero.myapplication.ui
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import android.widget.TextView
+import android.widget.EditText
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.navArgs
 import com.fcorrionero.myapplication.R
+import com.fcorrionero.myapplication.domain.CollectionProof
+import com.fcorrionero.myapplication.domain.DeviceData
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -25,6 +28,8 @@ class DeviceFragment : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
+
+    private val collectionProofViewModel: CollectionProof by activityViewModels()
 
     private val args: DeviceFragmentArgs by navArgs()
 
@@ -45,10 +50,23 @@ class DeviceFragment : Fragment() {
 
         val number = args.number
         view.findViewById<Button>(R.id.button).setOnClickListener {
+            fillViewModel(view)
             onButtonClick(view)
         }
 
         return view
+    }
+
+    private fun fillViewModel(view: View) {
+        val accesories = view.findViewById<EditText>(R.id.deviceAccessoriesText).text
+        val brandAndModel = view.findViewById<EditText>(R.id.brandAndModelText).text
+        val serialImei = view.findViewById<EditText>(R.id.serialImeiText).text
+        val deviceData = DeviceData(
+            accesories.toString(),
+            brandAndModel.toString(),
+            serialImei.toString()
+        )
+        this.collectionProofViewModel.setDeviceData(deviceData)
     }
 
     companion object {

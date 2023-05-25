@@ -1,13 +1,17 @@
 package com.fcorrionero.myapplication.ui
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.EditText
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.navigation.Navigation
 import com.fcorrionero.myapplication.R
+import com.fcorrionero.myapplication.domain.CollectionProof
+import com.fcorrionero.myapplication.domain.IssueData
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -23,6 +27,8 @@ class IssueFragment : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
+
+    private val collectionProofViewModel: CollectionProof by activityViewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,10 +46,23 @@ class IssueFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_issue, container, false)
 
         view.findViewById<Button>(R.id.issueButton).setOnClickListener {
+            fillViewModel(view)
             onButtonClick(view)
         }
 
         return view
+    }
+
+    private fun fillViewModel(view: View) {
+        val type = view.findViewById<EditText>(R.id.editTextText).text
+        val solution = view.findViewById<EditText>(R.id.editTextText2).text
+        val observations = view.findViewById<EditText>(R.id.editTextText3).text
+        val issueData = IssueData(
+            type.toString(),
+            solution.toString(),
+            observations.toString()
+        )
+        this.collectionProofViewModel.setIssueData(issueData)
     }
 
     companion object {

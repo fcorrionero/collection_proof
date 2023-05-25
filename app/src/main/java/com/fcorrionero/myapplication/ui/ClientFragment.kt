@@ -5,9 +5,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.EditText
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.navigation.Navigation
 import com.fcorrionero.myapplication.R
+import com.fcorrionero.myapplication.domain.ClientData
+import com.fcorrionero.myapplication.domain.CollectionProof
 
 private const val ARG_PARAM1 = "param1"
 private const val ARG_PARAM2 = "param2"
@@ -21,6 +25,7 @@ class ClientFragment : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
+    private val collectionProofViewModel: CollectionProof by activityViewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,11 +43,26 @@ class ClientFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_client, container, false)
 
         view.findViewById<Button>(R.id.clientButton).setOnClickListener {
+            fillViewModel(view)
             val action = ClientFragmentDirections.navigateToDeviceFragment(22)
             Navigation.findNavController(view).navigate(action)
         }
 
         return view
+    }
+
+    private fun fillViewModel(view: View) {
+        val clientName = view.findViewById<EditText>(R.id.textName).text
+        val clientPhone = view.findViewById<EditText>(R.id.editTextPhone).text
+        val clientAddress = view.findViewById<EditText>(R.id.editTextAddress).text
+        val clientDni = view.findViewById<EditText>(R.id.editTextDNI).text
+        val clientData = ClientData(
+            clientName.toString(),
+            clientPhone.toString(),
+            clientAddress.toString(),
+            clientDni.toString()
+        )
+        this.collectionProofViewModel.setClientData(clientData)
     }
 
     companion object {
