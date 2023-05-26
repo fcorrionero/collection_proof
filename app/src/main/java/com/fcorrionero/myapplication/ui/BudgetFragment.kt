@@ -52,7 +52,7 @@ class BudgetFragment : Fragment() {
             //val pdfService = PdfService()
             //pdfService.generatePdf(collectionProofViewModel, this.requireContext())
             val documentService = ITextPdfService()
-            documentService.generatePdf(this.requireContext())
+            documentService.generatePdf(this.requireContext(), this.collectionProofViewModel)
         }
 
         return view
