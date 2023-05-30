@@ -1,5 +1,6 @@
 package com.fcorrionero.myapplication.ui
 
+import android.app.AlertDialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -9,6 +10,7 @@ import android.widget.CheckBox
 import android.widget.EditText
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.navigation.Navigation
 import com.fcorrionero.myapplication.R
 import com.fcorrionero.myapplication.domain.BudgetData
 import com.fcorrionero.myapplication.domain.CollectionProof
@@ -53,9 +55,23 @@ class BudgetFragment : Fragment() {
             //pdfService.generatePdf(collectionProofViewModel, this.requireContext())
             val documentService = ITextPdfService()
             documentService.generatePdf(this.requireContext(), this.collectionProofViewModel)
+            showDialog(view)
         }
 
         return view
+    }
+
+    private fun showDialog(view: View) {
+        AlertDialog.Builder(requireContext())
+            .setTitle("Guardado Correcto")
+            .setMessage("El pdf se ha generado correctamente.")
+            .setPositiveButton("OK") { _, _ ->
+                // This is called when the OK button is clicked.
+                // Here we assume that action_firstFragment is the navigation action ID that navigates to the first fragment.
+                Navigation.findNavController(view).navigate(R.id.navigateFromBudgetToClientFragment)
+            }
+            .create()
+            .show()
     }
 
     private fun fillViewModel(view: View) {

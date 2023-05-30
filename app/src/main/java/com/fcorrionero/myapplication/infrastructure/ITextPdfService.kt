@@ -51,8 +51,24 @@ class ITextPdfService {
             document.add(Paragraph(Chunk.NEWLINE))
             document.add(getBillHeader(context))
 
+            val tableClientDevice = PdfPTable(floatArrayOf(4f, 1f, 4f))
+            val cellClient = PdfPCell(getClientData(context, collectionProof))
+            val middleCell = PdfPCell()
+            middleCell.border = Rectangle.NO_BORDER
+            val cellDevice = PdfPCell(getDeviceData(context, collectionProof))
+            tableClientDevice.addCell(cellClient)
+            tableClientDevice.addCell(middleCell)
+            tableClientDevice.addCell(cellDevice)
             document.add(Paragraph(Chunk.NEWLINE))
-            document.add(getClientData(context, collectionProof))
+            document.add(tableClientDevice)
+
+            document.add(Paragraph(Chunk.NEWLINE))
+            document.add(getIssueData(context, collectionProof))
+
+            document.add(Paragraph(Chunk.NEWLINE))
+            document.add(getBudget(context, collectionProof))
+            document.add(getSignature(context, collectionProof))
+
 
         } catch (e: Exception) {
             e.printStackTrace()
@@ -114,7 +130,7 @@ class ITextPdfService {
     private fun getBillHeader(context: Context): PdfPTable {
         val font = FontFactory.getFont(FontFactory.HELVETICA, 10f)
         val fontBold = FontFactory.getFont(FontFactory.HELVETICA, 10f, Font.BOLD)
-        val table = PdfPTable(floatArrayOf(1f,1f,6.5f,1.5f)) // Relative width of each column
+        val table = PdfPTable(floatArrayOf(1f, 1f, 6.5f, 1.5f)) // Relative width of each column
 
         val cellA1 = PdfPCell(Phrase(context.getString(R.string.ae_number), font))
         cellA1.border = Rectangle.NO_BORDER
@@ -140,6 +156,7 @@ class ITextPdfService {
         val fontBoldHeader = FontFactory.getFont(FontFactory.HELVETICA, 18f, Font.BOLD)
         val fontBold = FontFactory.getFont(FontFactory.HELVETICA, 10f, Font.BOLD)
         val font = FontFactory.getFont(FontFactory.HELVETICA, 10f)
+
         val tableHeader = PdfPTable(1)
         val cellHeader = PdfPCell(Phrase(context.getString(R.string.client_data), fontBoldHeader))
         cellHeader.backgroundColor = BaseColor.LIGHT_GRAY
@@ -147,39 +164,176 @@ class ITextPdfService {
         tableHeader.addCell(cellHeader)
 
         val tableBody = PdfPTable(2)
-        val cellL1 = PdfPCell(Phrase(context.getString(R.string.client_name) , fontBold))
+        val cellL1 = PdfPCell(Phrase(context.getString(R.string.client_name), fontBold))
         val cellR1 = PdfPCell(Phrase(collectionProof.getClientData()?.name ?: "", font))
-        cellR1.backgroundColor = BaseColor.LIGHT_GRAY
         tableBody.addCell(cellL1)
         tableBody.addCell(cellR1)
 
-        val cellL2 = PdfPCell(Phrase(context.getString(R.string.client_phone) , fontBold))
+        val cellL2 = PdfPCell(Phrase(context.getString(R.string.client_phone), fontBold))
         val cellR2 = PdfPCell(Phrase(collectionProof.getClientData()?.phone ?: "", font))
-        cellR2.backgroundColor = BaseColor.LIGHT_GRAY
         tableBody.addCell(cellL2)
         tableBody.addCell(cellR2)
 
-        val cellL3 = PdfPCell(Phrase(context.getString(R.string.client_address) , fontBold))
+        val cellL3 = PdfPCell(Phrase(context.getString(R.string.client_address), fontBold))
         val cellR3 = PdfPCell(Phrase(collectionProof.getClientData()?.address ?: "", font))
-        cellR3.backgroundColor = BaseColor.LIGHT_GRAY
         tableBody.addCell(cellL3)
         tableBody.addCell(cellR3)
 
-        val cellL4 = PdfPCell(Phrase(context.getString(R.string.client_identification_number) , fontBold))
+        val cellL4 =
+            PdfPCell(Phrase(context.getString(R.string.client_identification_number), fontBold))
         val cellR4 = PdfPCell(Phrase(collectionProof.getClientData()?.dni ?: "", font))
-        cellR4.backgroundColor = BaseColor.LIGHT_GRAY
         tableBody.addCell(cellL4)
         tableBody.addCell(cellR4)
 
         val table = PdfPTable(1)
         val cell1 = PdfPCell(tableHeader)
-        cell1.border =  Rectangle.NO_BORDER
+        cell1.border = Rectangle.NO_BORDER
         val cell2 = PdfPCell(tableBody)
-        cell2.border =  Rectangle.NO_BORDER
+        cell2.border = Rectangle.NO_BORDER
         table.addCell(cell1)
         table.addCell(cell2)
 
         return table
+    }
+
+    private fun getDeviceData(context: Context, collectionProof: CollectionProof): PdfPTable {
+        val fontBoldHeader = FontFactory.getFont(FontFactory.HELVETICA, 18f, Font.BOLD)
+        val fontBold = FontFactory.getFont(FontFactory.HELVETICA, 10f, Font.BOLD)
+        val font = FontFactory.getFont(FontFactory.HELVETICA, 10f)
+
+        val tableHeader = PdfPTable(1)
+        val cellHeader = PdfPCell(Phrase(context.getString(R.string.device), fontBoldHeader))
+        cellHeader.backgroundColor = BaseColor.LIGHT_GRAY
+        cellHeader.horizontalAlignment = Element.ALIGN_CENTER
+        tableHeader.addCell(cellHeader)
+
+        val tableBody = PdfPTable(2)
+        val cellL1 = PdfPCell(Phrase(context.getString(R.string.device_accessories), fontBold))
+        val cellR1 =
+            PdfPCell(Phrase(collectionProof.getDeviceData()?.deviceAccessories ?: "", font))
+        tableBody.addCell(cellL1)
+        tableBody.addCell(cellR1)
+
+        val cellL2 = PdfPCell(Phrase(context.getString(R.string.device_brand_model), fontBold))
+        val cellR2 = PdfPCell(Phrase(collectionProof.getDeviceData()?.deviceBrandModel ?: "", font))
+        tableBody.addCell(cellL2)
+        tableBody.addCell(cellR2)
+
+        val cellL3 = PdfPCell(Phrase(context.getString(R.string.device_serial_imei), fontBold))
+        val cellR3 = PdfPCell(Phrase(collectionProof.getDeviceData()?.deviceSerialImei ?: "", font))
+        tableBody.addCell(cellL3)
+        tableBody.addCell(cellR3)
+
+        val table = PdfPTable(1)
+        val cell1 = PdfPCell(tableHeader)
+        cell1.border = Rectangle.NO_BORDER
+        val cell2 = PdfPCell(tableBody)
+        cell2.border = Rectangle.NO_BORDER
+        table.addCell(cell1)
+        table.addCell(cell2)
+
+        return table
+    }
+
+    private fun getIssueData(context: Context, collectionProof: CollectionProof): PdfPTable {
+        val fontBoldHeader = FontFactory.getFont(FontFactory.HELVETICA, 18f, Font.BOLD)
+        val fontBold = FontFactory.getFont(FontFactory.HELVETICA, 10f, Font.BOLD)
+        val font = FontFactory.getFont(FontFactory.HELVETICA, 10f)
+
+        val tableHeader = PdfPTable(1)
+        val cellHeader = PdfPCell(Phrase(context.getString(R.string.issue_title), fontBoldHeader))
+        cellHeader.backgroundColor = BaseColor.LIGHT_GRAY
+        cellHeader.horizontalAlignment = Element.ALIGN_CENTER
+        tableHeader.addCell(cellHeader)
+
+        val tableBody = PdfPTable(2)
+        val cellL1 = PdfPCell(Phrase(context.getString(R.string.issue_type), fontBold))
+        val cellR1 = PdfPCell(Phrase(collectionProof.getIssueData()?.issueType ?: "", font))
+        tableBody.addCell(cellL1)
+        tableBody.addCell(cellR1)
+
+        val cellL2 = PdfPCell(Phrase(context.getString(R.string.issue_solution), fontBold))
+        val cellR2 = PdfPCell(Phrase(collectionProof.getIssueData()?.issueSolution ?: "", font))
+        tableBody.addCell(cellL2)
+        tableBody.addCell(cellR2)
+
+        val cellL3 = PdfPCell(Phrase(context.getString(R.string.issue_observations), fontBold))
+        val cellR3 = PdfPCell(Phrase(collectionProof.getIssueData()?.issueObservations ?: "", font))
+        tableBody.addCell(cellL3)
+        tableBody.addCell(cellR3)
+
+        val table = PdfPTable(1)
+        val cell1 = PdfPCell(tableHeader)
+        cell1.border = Rectangle.NO_BORDER
+        val cell2 = PdfPCell(tableBody)
+        cell2.border = Rectangle.NO_BORDER
+        table.addCell(cell1)
+        table.addCell(cell2)
+
+        return table
+    }
+
+    private fun getBudget(context: Context, collectionProof: CollectionProof): PdfPTable {
+        val fontBoldHeader = FontFactory.getFont(FontFactory.HELVETICA, 18f, Font.BOLD)
+        val fontBold = FontFactory.getFont(FontFactory.HELVETICA, 10f, Font.BOLD)
+        val font = FontFactory.getFont(FontFactory.HELVETICA, 10f)
+
+        val tableHeader = PdfPTable(1)
+        val cellHeader = PdfPCell(Phrase(context.getString(R.string.budget_title), fontBoldHeader))
+        cellHeader.backgroundColor = BaseColor.LIGHT_GRAY
+        cellHeader.horizontalAlignment = Element.ALIGN_CENTER
+        tableHeader.addCell(cellHeader)
+
+        val tableBody = PdfPTable(floatArrayOf(30f, 15f, 5f, 25f, 25f))
+        val cell1 = PdfPCell(Phrase(context.getString(R.string.budget_quantity), fontBold))
+        val cell2 = PdfPCell(Phrase(collectionProof.getBudgetData()?.budgetQuantity ?: "", font))
+        tableBody.addCell(cell1)
+        tableBody.addCell(cell2)
+        val cell3 = PdfPCell()
+        cell3.border = Rectangle.NO_BORDER
+        tableBody.addCell(cell3)
+        val cell4 = PdfPCell(Phrase(context.getString(R.string.budget_acceptation), fontBold))
+        val acceptation = if (collectionProof.getBudgetData()?.budgetAcceptation == true) {
+            "SI"
+        } else {
+            "NO"
+        }
+        val cell5 = PdfPCell(Phrase(acceptation, font))
+        tableBody.addCell(cell4)
+        tableBody.addCell(cell5)
+
+        val table = PdfPTable(1)
+        val cellM1 = PdfPCell(tableHeader)
+        cellM1.border = Rectangle.NO_BORDER
+        val cellM2 = PdfPCell(tableBody)
+        cellM2.border = Rectangle.NO_BORDER
+        table.addCell(cellM1)
+        table.addCell(cellM2)
+
+        return table
+    }
+
+    private fun getSignature(context: Context, collectionProof: CollectionProof): PdfPTable {
+        val fontBold = FontFactory.getFont(FontFactory.HELVETICA, 10f, Font.BOLD)
+        val tableBody = PdfPTable(floatArrayOf(5f, 5f))
+
+        val emptyCell = PdfPCell()
+        emptyCell.border = Rectangle.NO_BORDER
+        tableBody.addCell(emptyCell)
+        val cell2 = PdfPCell(Phrase(context.getString(R.string.client_signature), fontBold))
+        cell2.backgroundColor = BaseColor.LIGHT_GRAY
+        cell2.horizontalAlignment = Element.ALIGN_CENTER
+        tableBody.addCell(cell2)
+        tableBody.addCell(emptyCell)
+
+        val stream = ByteArrayOutputStream()
+        collectionProof.getBudgetData()?.signature?.compress(Bitmap.CompressFormat.PNG, 100, stream)
+        val byteArray = stream.toByteArray()
+        val img = Image.getInstance(byteArray)
+        val cellSignature = PdfPCell(img, true)
+        tableBody.addCell(cellSignature)
+
+        return tableBody
     }
 
 }

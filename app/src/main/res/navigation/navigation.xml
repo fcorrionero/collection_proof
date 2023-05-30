@@ -53,5 +53,8 @@
         <action
             android:id="@+id/navigateFromBudgetToIssueFragment"
             app:destination="@id/issueFragment" />
+        <action
+            android:id="@+id/navigateFromBudgetToClientFragment"
+            app:destination="@id/clientFragment" />
     </fragment>
 </navigation>
